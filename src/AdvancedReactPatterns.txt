@@ -1,0 +1,247 @@
+Resuability Component 
+In react I need to reuse two thing 
+pices of ui or stateful logic 
+stateful logic is a logic contain at least one react hook no matter which one 
+
+in react to reuse one pices of ui you need compoents and props 
+use Props as api for the compoent to enable custom behavior can be stateless or stateful or structural compoents
+
+you can pass content or anther compoent to a compoent by using the children prop 
+children prop is used to customize the compoent's content 
+
+
+to reuse the stateful logic you can write your own custom hooks 
+
+if i need to reuse visiual and stateful logic at the same time 
+to do this by Render Props Pattern 
+is called pattern because it's not thing packed into react mean it's not react feature 
+
+in the render props pattern the user of the compoent has compelete
+controll over what the compoent it's actually renders by passing
+a function as a props this function tell the compoent 
+what and how to render 
+
+
+
+Compound Component Pattern  
+mean you will have a multiple compoent that play togther in order 
+to create one big let's called superComponent which is then Compound Compoant
+-------------------------------------------------------- 
+if you need to take a part from the array using slice method 
+arrayName.slice(firstIndex , lastIndex) 
+-------------------------------------------------------- 
+The Render Props pattern 
+passing a prop called render which is a function that a compoent uses 
+to known which is render and to know how to do it 
+passing a prop called render and give value to it and this value is a function 
+render={FUNCTION=> function is a instruction to render something} 
+ex : render={products.map((product)=><Product product={product}/>)} /> 
+this is a Render Props pattern 
+first passing a props called render to the compoent 
+and render props take a value of how and what render that Compoant 
+
+render Props is the main way of sharing stateful logic across mutiable compoent 
+before we are using the react hook  
+
+
+-------------------------------------------------- 
+Higher Order Component pattern (HOC)
+Simply is a component take another Component and then return a new Component 
+that is a better (enhanced version from the inital Component) 
+a Higher order component that is a component that start with (with keyWord) 
+export default function withComponentName(takeComponent){
+return NewComponent
+} 
+عندي كمونت عايز اعمل عليه two toggle functionailty بس من غير ما اغير في اي حاجه 
+you can do this by higher order component to inmprove this component 
+what is the Higher Order Component is Simply a component that takes in another component and return a new component that a better   
+the higher order compoent that commnly start with with keyWord 
+
+A higher-Order Component is a function that takes a compoent and returns a new component with additional functionailty 
+---------------------------------------------------- 
+Compound Component Pattern  ==> is create a set of  related  Component work togther achivie a commen 
+and Useful Task   
+
+to create a Compound Component first create a parent Compoant and then a few different Child Component that belong to the parent  
+شبه مبادئ ال select وال options بي الضبط 
+that is used to build Higlhy resuable and flexable Component  
+we use the context api to implamant the Compound Component Pattern  
+
+how acually implamant the Compound Compoant  
+1) create a context 
+const counterContext = createContext() 
+2) Create a parent Component  
+export default function Parent({children}){ 
+    <counterContext.Provider  value={{some Values}}>{children}</counterContext.Provider>
+}
+3) Create a Child Components to help to implamant a comment task   
+function Count(){}
+4) Add Child Component as properties to parent compoent and this STEP IS OPTIONAL 
+Parent.Count = Count ; 
+in Compound Component we are not using any Props at all in the parent Compoant 
+
+if the Compoant have many props that's is called prop expsaion 
+
+this is greatest useCase for the Context Api to using to implamant Compound Compoant
+
+فكره الكمبوند كمونت اني بعمل اكتر من شيلد كمومبنت مع بعض بيعملوا هدف معين لو استخدامته واحد لو حد مش هيعمل حاجه ده هيديك error اصلا 
+---------------------------------------------------------------------------------------------------
+onClick={()=>onClose?.()} // if the function is exist the function is call if not exist the function is not call because optional Chaining Operator 
+functionName?.() the function exist call it not exist not call it 
+-
+react Portal is a feature it allow to render the element Outside the parent Component 
+dom structure while still keeping the element in the Original Position 
+in The Compoant tree
+with a Portal we can render the Component in any place that you want inside the DOM tree 
+but still the Compoant to the same place in react Component tree 
+
+createPortal is not part of react is a Part of react Dom 
+react Portal change the compoent Position in DOM tree but not change Position in react Compoant Tree 
+
+return createPortal( 
+ Component , 
+ positioni in the Dom tree ex : document.body 
+) 
+
+I need to make a Model Compoant to make itself known the Compoant is close or not not based in pices of state in AddCabin Component 
+
+So I need to build Compound Compoant pattern to make it resuable
+I need to change the AddCabin Compoant to Compound Compoant pattern 
+If i have more than one value i need to known which modal is actually open  
+
+export default function AddedCabin() {
+    return <Modal> // this is a parent Component
+        <Modal.Open> // this is a Children Compoant to Show Button
+            <Button>Add new Cabin</Button>
+        </Modal.Open> 
+        <Modal.Window> // this is also the Children Compoant to Show the Form 
+            <CreateCabinForm />
+        </Modal.Window>
+    </Modal>
+} 
+
+Clone Element make  a Clone from the element  
+import { cloneElement } from 'react';
+
+// ...
+const clonedElement = cloneElement(
+  <Row title="Cabbage">
+    Hello
+  </Row>,
+  { isHighlighted: true },
+  'Goodbye'
+);
+
+console.log(clonedElement); // <Row title="Cabbage" isHighlighted={true}>Goodbye</Row> 
+
+cloneElement this is a syntax cloneElement(element , props , ...children ) 
+
+if you are return children only not return in this syntax return {children } but return in this syntax return children 
+
+
+i need if i click Outside the model Window the window is close  
+i need to remove this event listener when the Compoant unmount 
+to remove the eventListener By this syntax ()=>removeEventListenre('name of event ' , name of function ) 
+مينفعش تحط ال useEffect under the if condition 
+
+useRef is used in the dom Manipulation is also used to select the element 
+const element = useRef=(null) 
+
+go to the element you need to select and write this ref={element } 
+ref.current is the element is the model window  
+
+عايز لما ادوس خارج ال model يطلعني برها ال model اعمل دي ازاي 
+1- to do this first Make a useEffect to handel this  
+
+useEffect(function(){  
+    function handelClick(e){ 
+
+    }
+ document.addEventListener('click' , handelClick)    
+ // remove the eventListener when the Compoant unmount 
+ return ()=>removeEventListenre('click' , handelClick )
+}) 
+2- select the model مهو بي العقل محتاج اختار المودل عشان لو داس علي اي حاجه تانيه اقفله طب اختار المودل ازاي من خلال ال useRef() 
+3- make a event Listenr for Click  inside the useEffect hook  
+if(ref.current) check the ref element is stored or not 
+if(!ref.current().contains(e.target)) معني كده ان لو العنصر الي انت بدوس عليه مش هو الي بتعمل refrence عليه ال اف هتتحقق 
+
+const ref = useRef(null) ; 
+
+useEffect(function(){ 
+  
+  function handelClick(e){
+    if(ref.current && !ref.current.contains(e.target)) 
+      close()
+  }
+
+  document.addEventListener('click' , handelClick , true) // كده انا ضفت افنت ليسنر علي البج كلها بي معني انا لو دست علي اي مكان في الصفحه الفنكشن دي هتحقق 
+
+  return ()=>document.removeEventListenre('click' ,  handelClick , true )
+} , [close]) 
+
+
+<Compoant ref={ref} /> 
+
+//// كده العنصر ده انا بعمل عليه refrence وكمان هو متخزن عندي في ال ref.current  
+/ كده العنصر ده انا بعمل عليه refrence وكمان هو متخزن عندي في ال ref.current 
+
+
+this a code if click Outside the model the Model Will be a close 
+function toCloseModel(){//close} 
+const ref = useRef(null) // is used to select the Compoant 
+useEffect(function(){ 
+    function handelClick(e){ 
+        if(ref.current && ref.current.contains(e.target)){
+            toCloseModel()
+        }
+    }
+  document.addEventListener('click' , handelClick , true) 
+  return ()=>document.removeEventListenre('click' , handelClick , true)
+} , [toCloseModel]) 
+by this code if clicking Outside the Model the Model Will be Close 
+<Compoant ref={ref} />  
+
+render Prop tell to the Compoant what to do for each cabin 
+
+Menu have seen in the web application is always composed of a button then if you click to the toggle button the list is open and the List Itself is composed of many buttons  
+ 
+structure of this Menu is => 
+<Menus.Menu> 
+<Menus.Toggle/> // if click the list is open if Click again it's close 
+<Menus.List>  I need to make a connection between the Toggle and the List can I make this by opens and name or for more simple can make this by cabinId
+<Menu.Button>Delete</Menu.Button>
+<Menu.Button>Edit</Menu.Button>// buttons if a click to it that's make a action  
+</Menu.List>
+
+</Menus.Menu>
+
+
+<HiEllipsisVertical/> this is icon that make three dots vertical 
+
+to find the Closest button parent by this syntax 
+function handelClicl(e){
+  to find the closest button Parent 
+  e.target.closest('button').getBoundingClientRect() 
+  this function .getBoundingClientRect() give some data about the element Position 
+  this function .getBoundingClientRect() give some data about the element Position 
+
+} 
+
+
+const sortBy = searchParams.get('sortBy') || 'startDate-asc'
+  const [filed, direction] = sortBy.split('-')
+  const modifier = direction === 'asc' ? 1 : -1
+  const sortedCabins = filterCabins.sort((a, b) => (a[filed] - b[filed]) * modifier)
+
+
+to sort data in asc ==> sort((a,b)=>a-b)
+to sort data in desc ==> sort((a,b)=>(a-b)* -1 ) to sort data in desc 
+from 1 to 10 
+from 10 to 20 
+from 20 to 33 
+
+const name = 'ahmed-sayed' ; 
+const [firstName ,secondName] = name.split('-') ; 
+outPut: firstName = ahmed  , secondName =sayed 
+

@@ -1,0 +1,273 @@
+styled Component Library allow to write a css code inside the js Component files 
+to install this Library by this commend npm i styled-components library  
+
+this Library it works to take a regular html element and then using the styled function that return a component  
+
+ex of syntax 
+
+using styled function that return a component 
+const H1 = styled.h1` 
+font-size:30px ;
+font-weight:600 ; 
+css code 
+` 
+
+<H1>Text</H1> 
+
+this function create a random class and assign this style to the random class 
+
+in styledCompoent is the component you want to style is called App the component that make is called StyledApp 
+const StyledApp = styled.div` 
+css code 
+` 
+to make a global styles in styled component in css  
+first create a js file is called GlobalStyles.js  
+second make a variable and assign createGlobalStyle function from styledCompoent Library to this variable  
+import {createGlobalStyle} from 'styled-components'
+const GlobalStyles = createGlobalStyle` 
+global css Code  
+`   
+and you need to connect this global styles come from the styled-components library to react app 
+import this GlobalStyles component to app file this component don't take any Child and define in the first of the app 
+انت كده عملت كل الشغل الي عليك فاضل حاجه واحده يا حلو هي انك تستخدم الجلوبل فريبل  
+color:var(name of variable in the root block in css) 
+
+styled-component providing a way to using this variable inside the app by using mechanism called theme 
+
+all css variable named in this pattern --name-name-intensity:value ;  
+
+
+
+
+انت طبعا هتعمل لي كل كمبونت فايل خاص بيه تقدر تعمل كده من خلال اننك تعمل سلكت لي الكود الي انت عايزه ودوس كليك ليمين ودوس علي refactor وهو هيعمل كده اوتوماتك 
+
+const Button = styled.button` 
+ font-size: 1.4rem; 
+ padding: 1.2rem 1.6rem; 
+ font-weight: 500; 
+ border: none; 
+ border-radius: var(--border-radius-sm); 
+ background-color: var(--color-brand-600); 
+ color:var(--color-brand-50) ; 
+ box-shadow: var(--shadow-sm); 
+ cursor: pointer;
+`;
+in this case we have a export default for button element like this <button>hello</button> and have some style 
+
+how to handel Hover state in styled-compoent library 
+to handel hover state in styled-compoent is very similar to sacss 
+inside the element write &:hover{ 
+    css code 
+} 
+again to handel hover state in the styledCompoent library like THIS 
+&:hover{
+    css code 
+} 
+
+we need to make a resuable heading compoent not working for only to h1 but working for h1 , h2 , h3 
+
+we write a css code inside the template letral so we can write a js expression in there 
+ex const Heading  = styled.h1` 
+font-size:${10>5 ? '20px' : '15px'} ; 
+in this case I'm write a js expression to make a styled to font size  
+if 10 grater than 5 assign to 20px otherWise assign to 15px 
+`  
+and can also make this  
+const text = css`text-align:center ;` to make it Highlitaed 
+const Heading = styled.h1` 
+${test}
+` 
+we can to make a css function to make a syntax Higlited back in the text variable 
+ 
+const text  = css` 
+text-align:'center' ; 
+
+` 
+
+const Heading  =styled.h1` 
+
+here we can access to the Props we are Given to the element 
+By CallBack function this is a syntax for this function 
+{props=>props.namePropsYouAreGiven === 'value' && css` 
+css code 
+
+`}  
+{
+    props=>props.PropsValueYouAreGiven === 'value' && css` 
+    write css code here
+    `
+}
+ 
+` 
+<h1 type='h3'>Hello </h1> 
+in this case we make a style for h3 but the element appear 
+is h1 this is not good in the SEO and Search engine 
+so styled-compoent solve this issue by make a as props 
+<Heading as ='h3'></Heading> make element appear as h3 element 
+althogh Heading is h1 element 
+const Heading = styled.h1` 
+{props=>props.as === 'h3' && css` 
+write a css code here 
+`}
+`
+
+inside styled.htmlElement` 
+inside single Quote we can acess to the props value by write this methed 
+${props=>props.PropsName === 'PropsValue' && css` 
+
+css CODE 
+`}
+` 
+
+Make a resuable styles compoent can be reuse everyWhere in the Site 
+//Row is A compoent make a elements display a side by side 
+const Row = styled.div` 
+display:flex ;  
+` 
+we can make a defaultProps to react compoent 
+like this  
+nameCompoent.defaultProps = {
+    nameOfProps:value 
+} 
+
+we can make a default props to any react compoent like this 
+nameOfReactCompoent.defaultProps = {
+    nameOfProps:value 
+} 
+we can make a default Props to any of react Component 
+to do that Like This 
+compoentName.defaultProps = {
+    nameOfProps:value , 
+} 
+
+اكنك بي الضبط عملت كده 
+export default function Row({type:'value'}){ 
+    return jsx code 
+} 
+
+we can make this  
+
+const size =  {
+    large: css` 
+    font-size:20px ; 
+    color:red ; 
+    ` , 
+    medium:css`
+    font-size:18px ; 
+    color:blue ; 
+    `
+    small:css` 
+    font-size:15px ; 
+    color:gray ; 
+    `
+} 
+
+<P size='large'>  Hello  </P> 
+the last step to make a style apply  
+
+const P = styled.p` 
+  ${props => size[props.size]} // هنا هيروح يشوف الكمبونت واخد بربس ايه ويديله الستيل بتاعه 
+`  
+
+to give the element default Props like this 
+P.defaultProps = {
+    size:'large' // this react Component have a default props is a size and the value is large
+} 
+
+
+to install reactRouter dom by this commend react-router-dom@6 
+
+Setting Up all Route in the decleative way Like This 
+<BrowesrRouter> 
+<Routes> 
+<Route path='pathyouneedtotheelement' element={<Element/>} ></Route>
+</Routes>
+</BrowesrRouter>
+
+عشان اخلي المستخدم اول ما يفتح ال app يحصل navigation علطول اقدر اعمله عن طريق السطر ده 
+<Route index  element={<Navigation  replace to='dashboard' > 
+</Navigation>} ></Route> 
+كده اول ما المستخدم يفتح الموقع هنخليه يحصله نفجيت علطول ةيروح صفحة الدش بورد 
+<Route index element={<Navigation replace to='/dashboard'  />}/> 
+
+Each React Compoent can only return exactly one element or one compoent
+ 
+
+ the Syntax if the User Open the Site Automatically go to the Page 
+ <Route index element={<Naviagete replace to='/dashboard' />} ></Route> 
+
+ in styled Compoent Library the GlobalStyles Compoent don't take any Children is self closing tag 
+<> 
+ <GlobalStyles/> 
+ and tags
+</> 
+if you need to show the Route  inSide anther Route make this Route A parent Route and Put this Anther Route inSide this Parnet Route 
+Called Layout Route to the Route don't have a path Props 
+<>
+      <GlobalStyles />
+      <BrowserRouter>
+        <Routes>
+<Route element={<AppLayout/>}>  👈 in this case this Route  is Called Layout Route Beacuse don't have a path prop and in this case AppLayout will render in every Route is render
+          <Route index element={<Navigate replace to='/dashboard' />}></Route>
+          <Route path="dashboard" element={<Dashboard />}></Route>
+          <Route path="booking" element={<Bookings />}></Route>
+          <Route path="cabins" element={<Cabins />}></Route>
+          <Route path="account" element={<Account />}></Route>
+          <Route path="settings" element={<Settings />}></Route>
+          <Route path="users" element={<Users />}></Route>
+          <Route path='login' element={<Login />}></Route>
+          <Route path="*" element={<PageNotFound />}></Route>
+       </Route>
+        </Routes>
+      </BrowserRouter>
+    </> 
+
+to show the Child Compoent go to the Parent Component and inside the Parnet Compoent write <Outlet/> in this case show child compoent inside the Parnet Compoent 
+لو عايز تعمل استيل لي كمونت وهو اصلا موجود مثلا لو عايز عمل استيل لي كمونت الهيدر وهو كده كده موجود استخدم الترك دي 
+
+const StyledCompoentName = styled.header``
+export default function Header(){} 
+
+to make a Styled the SideBar in the Left and the Header in the top Right and content under them we Using GRID 
+first thing grid template column control the number of column and the width of each column 
+grid template rows control the number of rows and the Height of each row 
+grid-template-column:26rem 1fr ;  mean make a two column width of the first column is 26rem  and the width of the second الباقي من الويب سيت
+grid-template-rows: auto 1fr  ; // mean make a two rows the first row is fit content the second row is all website  
+
+
+to make a Link in a styled Compoent Library Like this 
+
+const Link = styled.a` 
+css code 
+` 
+
+export default MainNav(){
+    return <> 
+    <ul> 
+ <li>  
+ <Link >Home</Link> if you are Using the a tag you must use href attr ex: <Link href='/dashboard'>Home</Link> 
+ if using Link or NavLink in reactRouter dom suppoerted you must using to attr 
+ <NavLink to='/dashboard'>Home</NavLink>
+ </li>
+    </ul> 
+
+    
+    </>
+} 
+
+if you need to style a Custom-Compoent in styled-compoent Library we can using this by styled(name of Custom Compoent) 
+if i need styled NavLink Compoent in reactRouter-dom library we can do this in this Syntax 
+const StyledNavLink = styled(NavLink)` 
+css code 
+` 
+again 
+const StyledNavLink = styled(NavLink)`css code` 
+*******************************THIS IS A LINK STATE IN CSS**********************************
+Link (a:link): This is the unvisited state when the user is yet to click on the link.
+Visited (a:visited): The state where the user has visited the link at least once.
+Hover (a:hover): The state when the mouse is hovering over the link.
+Active (a:active): The state where the link is clicked but is yet to navigate the user to the destination href address.هو داس بس مرحش علي الواجهه
+Focus (a:focus): The state where the link is in focus, like when moved to using the tab key on the keyboard. 
+
+لو عايز ال input عندك يكون متخصص لي حاجه معينه يعني مثلا text  , file , password ..... 
+styled.input.attrs({type:'file'}) ==> كده ال style ده هبكون لي ال input ال type بتاعه file بس 

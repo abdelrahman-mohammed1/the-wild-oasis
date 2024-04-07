@@ -1,0 +1,498 @@
+ReactQuery is used to manage the Remote State 
+ReactQuery will take overData fetching and Storage 
+
+ReactQuery is very PowerFul Library for managing remote state (server state) 
+remote state : state that be stored in the server and we need to load into you application 
+
+react Developer is called data fetching library react itself is missing 
+
+the most fudmantal thing in react Query is all remote state  is Cached  
+in react Query => data stored in cache 
+
+
+if you need to fetch the data in the Compoent A 
+ReactQuery   fetch data from api and Stored the recive data in the Cache so the Compoent A can use it 
+so if the Compoent B need to fetch this data no additional api request will be nessasry because the data in the cache  
+React Query Give us Automatic loading and error state  
+and Automatic re-fetching the data in certain setuation ex : after leaving the Broswer window and come back to it 
+Pre-fetching data fetch the data will we Know Fetch data that will become nessasry later before it acually displayed in screen  
+pre-fetching mean fetching data not in the current page no but to the next page and when the user go to the next page displayed this data recive from cache and not displayed the Loading Spinner  
+Easy remote state mutation (updating) in react Query  
+
+offline Support since the data is acually cached the user move around the app when the user is offline the Compoent has recive data from the cache is still displayed the data 
+
+remote state is fundamentally different from regular (UI) state 
+
+
+to install react Query by this commend : npm i @tanstack/react-query@4 
+to install react Query by this commend : npm i @tanstack/react-query@4 
+to install react Query by this commend : npm i @tanstack/react-query@4 
+
+the Library is called tanstack not reactQuery because is used in anther framework like VUE 
+
+how to setup react-query in your app 
+idea intagrat reactQuery with your app is similuar to context-api or redux 
+ 
+to setup your cache and the QueryClient using new QueryClient() 
+and stored this function into the variable called queryClient 
+const queryClient = QueryClient() // to setup the cache and the QueryClient 
+inside the QueryClient we can path a cable of options  
+const queryClient = QueryClient({ 
+    // inside this object write the cable of options 
+    defaultOptions:{
+        queries:{ 
+            staleTime: 60*1000  , // the amount of the time the data in the cach will still fresh is stale vaild and refetch again 
+       to set staleTime become a one minute set to 60*1000 60 seconds * 1000 to become one minute
+        }
+    }
+}) // set up the cache  
+Provide the all  Query data into your application tree to make this in this Syntax 
+<QueryClientProvider client={queryClient}>  // this compoent take a client prop and take value of this queryClient you are made
+
+</QueryClientProvider> 
+--------------------------------------------------------- 
+--------------------------------------------------------- 
+to make a Query Client and Setting Up your cache in this Syntax 
+===> to make a QueryClient in QueryClient  Provided  in reactQuery library
+const queryClient = QueryClient({ 
+  defaultOptions:{ 
+    queries:{
+        staleTime:60*1000 ,
+    }
+  }
+})
+
+to Provide Query data in my app using the QueryClientProvider and take the client props and assign the queryClient value to this prop 
+<QueryClientProvider client={queryClient}>
+</QueryClientProvider> 
+
+like the redux reactQuery have a devTools 
+to install reactQuery devTools by this Commend ==> npm i @tanstack-react-query-devtools@4 
+ after install the first child of the QueryClientProvider compoent become the ReactQueryDevtools and assign the Prop the intialIsOpen to false 
+ 
+ const queryClient = new  QueryClient({
+    defaultOptions:{
+        queries:{
+          staleTime:120*1000 ; // make a stale time to become two minutes
+        }
+    }
+ })
+ <QueryClientProvider client={queryClient}>  
+ <ReactQueryDevtools intialIsOpen={false}/>
+ </QueryClientProvider>
+ 
+to setUp reactQuery devTools by this commend 
+<ReactQueryDevtools intialIsOpen={false}></ReactQueryDevtools> 
+-------------------------------------------- 
+to fetch data from the reactQuery  
+the most important function and you are use frequantly is called  
+useQuery() custom hook 
+useQuery() and take a object with two things 
+const x = useQuery({
+    first a query key that uniquly intidfy the data that will be here 
+    queryKey:['name of query'] , 
+    second the query function that is a function used for fetching the data from acually api which important the function must be return a Promise 
+    ex of function that retuen a Promise is getCabin function 
+    queryFn:getCabin() // that function that return a Promise 
+}) 
+
+The useQuery hook now accepts an array as the first argument, which represents the query key. 
+The second argument remains the query function, ex (: fetchData. 
+
+console.log(x)  ; 
+
+after fetching the data return object with alot of key Like 
+data , dataUpdateAt , error , isError,isFetched , status 
+
+
+to fetch the data from the reactQuery using a buildIn Hook is called useQuery() 
+inside the useQuery define the queryKey:['and set the name of key'] 
+and queryFunction : function like this Syntax 
+const {isLoading , data:cabins , error } = useQuery({ 
+    queryKey:['cabin'] , 
+    queryFn:getCabins
+}) 
+why write object to destructring the value that retuen from useQuery hook 
+get isLoading and data and renaime it to become cabins and error 
+
+we can use this variables like this Syntax : 
+
+if(isLoading) return Compoent 
+if(error) return Component 
+
+const Table =  styled.div` 
+css code 
+` 
+return <Table role='table'> // tell the browser this div Should be a table 
+<></>
+<></>
+<></>
+</Table> 
+
+to remove Package you are not needed by this Commend : npm uninstall name of package 
+useQuery({
+  //! first param is a queryKey is a key and the value is the name of the key inside the array 
+  queryKey: ['cabins'],
+  //! the second aragument is a queryFn and take the function is used to fetch the data 
+  queryFn: getCabins
+}) 
+
+const queryClient = new QueryClient({
+    queries:{
+        stale:0 , // data is always become stale
+    }
+ }) 
+ "stale time" refers to the amount of time that data is considered fresh before it becomes stale and needs to be refetched from the server. The stale time determines how long React Query will consider data valid before making a new request to refresh it 
+
+if set stale TIME to become zero in REACT_QUERY 
+Setting the staleTime in React Query to zero essentially means that the data will be considered stale immediately after it's fetched. In other words, every time you request data, React Query will fetch it anew from the server, regardless of whether the data has been previously fetched or not.
+
+This behavior effectively disables caching for that query, ensuring that React Query always retrieves the latest data from the server without relying on any cached data 
+
+
+how mutations a remote server state 
+"mutation" refers to a mechanism for making changes to data on the server 
+
+first  mutation is delete a row 
+function deleteRow(id){
+    const {data, error} = await supabase 
+    .from('cabins')
+    .delete() 
+    .eq("" , ) 
+
+    //انت عايز تمسح صف معين مش عايز تمسح كل الصفوف طبعا تعملها ازاي بقي عن طريق 
+    تحدد العمود بتاعك بعد كده تحدد القيمه بتاعت العمود الي انت عايز تمسحه يعني مثلا انا عندي مجموعه من الاسماء عايز امسح الانسان الي اسمه احمد امسحها ازاي امسحها كده 
+    .eq("name" , ) 
+    //انا حددت اسم العمود ناقص بس اديله القيمه الي عايز امسحها  
+    .eq("name" , ahmed) 
+    //كده بقولها شايف العوميد دي كلها امسح العوميد الي القيمه بتاعتها اسمه hpl] 
+    
+}
+طب في الحاله عندنا عايز امسح العمود الي قيمته عن طريق ال id اعملها ازاي كده 
+.eq("id" , id) 
+function become  
+export function handelDeleteById(id){
+    
+const { error } = await supabase
+  .from('cabins')
+  .delete()
+  .eq('id', id) 
+  if(error){
+    console.error(error) 
+    throw new Error('Cabin Could not be Deleted' )
+  } 
+} 
+
+to make a muatation in reactQuery using useMutation hook 
+useMutation hook take a object first element should be a muatation function 
+const {isLoading , mutation  } = useMutation({
+    muatationFn: pass here function it actually it make a muatation ex : (id)=>deleteCabin(id) || deleteCabin , 
+}) 
+this hook retuen object like useQuery 
+
+this is a function is used to connect between the button and the useMutation build In hook inside the React Query 
+ex:: 
+<button onClick={()=>muatation(id)} >DELETE</button>// take id because i need to delete it by id 
+
+if click to delete button the data is not changed because it changed only if reload the page why beacuse If reload the page reactQuery is not Invaild in cache and you need to refetch again so new data is become displayed again 
+so need to if the mutation success need to make a action to display the new data the action become  refetch data in reactQuery 
+// onSuccess take a function inside this function write what to do if the mutation is successfull
+onSuccess:()=>{
+// need to get QueryClient and call InvailditQueres in there 
+to get queryClient you define it in the App using a special hook called the useQueryClient() hook
+} 
+
+const queryClient = useQueryClient() ; 
+// to make a mutation  using useMutation hook : muatation is a mechanism to change the data in the server
+const {isLoading:isDeleting , mutation} = useMutation({
+    queryFn: mutation FUNCTION , 
+    onSuccess:{
+        queryClient.invaildateQueries({
+            // pass the queryKey 
+            queryKey:['cabins']  
+        })
+    }
+    طب احنا عندنا ال onSuccess هو ال error ملوش نفس قلك ازاي لازمخ نعمل ال onError 
+    onError : (err)=>alert(err.message) // الارار هنا لو حصل اي error جوها ال mutation function الي عندي 
+}) 
+
+TO MAKE A MUTATION IN REACT QUERY USING THIS HOOK useMutation hook 
+use Mutation hook take a object and first key in this object is mutationFn:mutation function 
+onSuccess if mutation success what you need to happend 
+onSuccess take a callback function
+onSuccess:()=>{ 
+    queryClient.invaildateQueries({
+        queryKey:[name of the key you need to invaildate]
+    })
+} 
+onError:(err)=>console.log(err.message)
+const {mutation , isLoading : isDeleting} =  useMutation({ 
+    mutationFn:deleteCabin , 
+    onSuccess:()=>{
+        clientQuery.invaildateQueries({ 
+            queryKey:['cabin']
+        })
+    } 
+    onError:err=>alert(err.message)
+})  
+to access to the QueryClient from any where in the Project using useQueryClient hook 
+-------------------------------------- 
+displaying Toasts (Toasts==> is some beatifull Notifications) 
+to install react hot toast package using this commend : npm i react-hot-toast 
+
+to added toast in you app you must added this  
+self closing Compoant called Toaster 
+like this  :  
+gutter is space between toast and the window
+containerStyle take a object of style style of toast
+<Toaster position="top-right" gutter={12}  
+containerStyle={{margin:12px}}
+ toastOptions={{ 
+    inside toast option write the style container from inside 
+    time duration in case of Success 
+    time dursatoin in case of error 
+    success:{
+        duration:3000 , 
+    } 
+    error:{
+        duration:5000 , 
+    } 
+    style:{
+        
+    }
+ }}
+ /> at the end you ready to use the Toaster 
+
+
+ toast.success('successfully deleted') 
+ toast.error('could be deleted') 
+
+------------------------------------- 
+to handel Form in react you need third library is called reactForm  
+to install the form hook is used to handel form using this commend => npm i react-hook-form@7 
+the first step to  make react-hook-form work is to register all input field you need to handel it 
+mean register all input field you need react to handel it 
+
+to added react hook form in your app like a useState hook  
+const {register , handelSubmit } = useForm() // useForm provide two function the first function is a register function used to register all input field need to handel using react-hook-form 
+// second function handelSubmit function 
+onSubmit(data){
+    console.log(data) // later use data the get from form into supabase
+}
+<form onSubmit={handelSubmit(onSubmit)}> 
+<div> 
+<label>Name</label> 
+<input placeholder='enter name' id='name' {...register('name')}  {...register('same id value')} // to make this input register to handel it using useForm ></input>
+</div>
+</form>
+
+in html ==> <button type='reset' >RESET</button> in this case button work as a reset button   
+
+to change something like deleted or update or created using useMutation hook is a hook is used to mutation 
+this is a Syntax :  const {mutation , isLoading:isOPERATIONNAME}  =  useMutation({
+    mutationFn: // write here your mutation function
+}) 
+
+to make a form after Submit to rest it using reset that return from useForm hook 
+const {reset} =  useForm() ; 
+
+clienQuery.invaildateQueries({
+    queryKey:['cabin'] , 
+    reset() // after invaildateQueries the form is reset 
+}) 
+
+-------------------------------------------------------------- 
+handel form in the react query to handel form in the useForm hook inside the register function this is used to handel form 
+ex:
+<input type={'text'} id={'name'} {...register('name' , { 
+
+    required :'message ex : this filed is required place '
+}  )} 
+
+register function take a two param first is the value of id  second is the object using to handel filed  
+
+onSubmit={handelSubmit(onSubmit ,onError)} 
+when click the button if the user fill the form successfully the onSubmit function will be call 
+if one error in any form handeler the second function will be call is called onError and can added more thing inside form vaildate like required and minValue && maxValue 
+
+<input type='text' id='name' {...register('name' , {
+    required:'this filed is required' , 
+    min:{
+        value:1 // or any number you need  
+        message:'Capacity must be at least one'
+    }
+})} 
+
+to access to the input filed inside anther input filed using the getValues Provided by the usesForm hook 
+ex : getValues().idValueOfFiledYouNeedToValue 
+
+and can make a custom vaildate inside this form using vaildate key 
+vaildate: callback function to make this vaildate 
+vaildate:(value)=> getValues.idValue >= value || 'error message' // value this is current value of this input 
+
+vaildate:(value) =>getValues().regularPrice >= value || 'Discount Should be less than regular Price'
+
+
+you can get errors handelers that return from the form and displayed into the UI using formState inside the formState we have a error 
+in the errors inside the form state 
+const {formState}  = useForm()
+const {errors} = formState ;  
+
+انت لما يكون عندك props واحد بس وال props ده ليه ابناء تقدر توصل لي الابناء بتوعه عن طريق السطر ده 
+{children.props.valueYouNeed } 
+
+
+How to upload the image in Supabase :- 
+
+need to make A URl contain the packe URL and unique image name  
+ex : https://gyfrnfkshijkulykeica.supabase.co/storage/v1/object/public/cabin-images/cabin-001.jpg 
+the packet URL is ==> https://gyfrnfkshijkulykeica.supabase.co/storage/v1/object/public/cabin-images/ this is a packet url 
+unique image name ==> cabin-001.jpg  
+to make a name of the image must be a unique name you can make this by const imageName = `${Math.random()}-${newCabin.image.name}` to make Sure the image name is unique 
+if name contain any slaches the supabase create a folder for that  
+you need to replace all / with nothing '' 
+so image name become that : 
+const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll('/' , '')  
+this supabase URL :: https://gyfrnfkshijkulykeica.supabase.co 
+this storage packate :/storage/v1/object/public/
+name of a packate : cabin-images 
+name of a image : cabin-001.jpg 
+to upload the image we have a two things first createCabin 
+second Upload the image  
+
+to handel upload image you must make a Policy for that operation  
+يعني تخلي في سماح انه يعمل كل العمليات الممكنه 
+
+const {error:storageError } = await supabase.storage.from('cabin-images').upload(imageName, data.image)
+  if (error) {
+    //delete the image if not uploaded suceessfully
+  } else {
+    // Handle success
+  }
+
+
+
+-------------------------------------------------
+HOW TO UPLOAD IMAGE IN SUPABASE  
+1- get name of the image 
+newCabin.image.name 
+2-check the name of the image is unique by get random number in the beginig 
+const imageName = `${Math.random()}-${newCabin.image.name}` 
+3-replace all / with empty string 
+const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll('/' , '')
+4- get image path to put the image in supabase database have it own shape by 
+supabaseUrl/packetName/imageName 
+const imagePath = `${supabaseUrl}/${packateUrl}/${imageName}` 
+5-put the image in supabase table [{...newCabin , image:imagePath}]
+6- after added the image in the supabase table upload the image 
+ // this code provided by supabase 
+ const {  error:storageError } = 
+  await supabase.storage.from('bucket_name').upload('file_path'==> image path, file =>newCabin.image)
+  if (storageError) {
+    // Handle error 
+    throw new Error('Could not be Uploaded the image)
+  } else {
+    // Handle success
+  }
+const avatarFile = event.target.files[0]
+const { data, error } = await supabase.storage
+  .from('avatars')
+  .upload('public/avatar1.png', avatarFile)
+
+
+
+to upload image we have two operations 
+
+const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll('/'  , '') 
+const imagePath = `${supabaseUrl}/stoageUrl/${imageName}` 
+انا عايز احط الصور في الجدول فا طبيعي احطها علي هيئة link 
+const { data, error } = await supabase
+  .from('cabins')
+  .insert([
+  {...newCabin , image:imagePath}
+  ])
+  .select()
+if(error){/// handel error} 
+
+second after create suceessfully upload the image 
+ 
+const {   error:storageError } = await supabase.storage
+  .from('packate-name')
+  .upload(imageName, newCabin.image)
+
+if(storageError){ 
+    console.error(storageError)
+    throw new Error('Image Not Uploaded ') 
+      await supabase.from("cabins").delete().eq("id", data.id); 
+     // عشان انا عايز لو الصوره محصلهاش upload الكبينه ميحلهاش كريات فا لاتتمسح 
+} 
+
+return data  
+to upload image  
+وخلي بالك من ال poilicy 
+------------------------------------------------------------------ 
+useForm(can take a default valuse) 
+ex:  
+const {id:editId , ...editValues} = cabin  
+const editIdCheck = Boolean(editId) ; 
+const { register} = useForm({
+    defaultValues: editIdCheck ? editValues :{}
+})  
+
+
+import {somthing} from 'any place' 
+
+you need to change the name of the somthing you will import how to change it by as 
+import {somthing as antherName} from 'any place ' 
+
+
+you can handel the onSuccess case not in the useMutation function Hook 
+only but can do that in the mutation function itself 
+ex ===> mutation(newCabin , {
+    onSuccess:()=>reset() // in this case the onSuccess have access to data and can reset it 
+}) 
+ 
+mutation(newCabin , {
+    onSuccess:(data)=>{
+        console.log(data) 
+        reset()
+    }
+}) 
+
+custom hook to fetch the data is useCabins() 
+
+when added anything we have a some steps : 
+first make a function to handel this  
+function handelAdded(){} 
+second make a object inside this function and inside this object the data 
+need to added 
+function handelAdded(){
+    createCabin({
+        name:`copy name ${name}`, 
+        image 
+    ..
+    })
+} 
+
+عشان تخلص من حوار ال undefined ده يعني البيانات في البدايه بتكون  
+فانت عاايز تخلص من الحوار ده تعملها كده 
+
+const {settings:{
+    data
+} = {} => معني كده لو مفيش داتا خليه فاضي}
+
+
+عايز لما اجي ادخل القيمه واطلع من ال input filed احتفظ بي القيمه دي اول اخد القيمه الجديده اعمل الكلام ده ازاي 
+function  handelBlur(e){
+    const {value} = e.target ; 
+    console.log(value) 
+    //كده كل ما تعمل بلور علي العنصر القيمه بتاعت الانبوت هتتطبع في الكنسل  
+} 
+
+<input type='text'name='firstName' onBlur={(e)=>handelBlur(e , 'firstName')} 
+لما اجي عدل علي قيمه واحدها بس هتكون كده 
+function handelUpdate(e , fileNameinDataBase){ 
+    const {value} = e.target ; 
+    if(!value) return 
+    updateFiled({fileNameinDataBase:value}) // so you will update the a single filed in dataBase
+}

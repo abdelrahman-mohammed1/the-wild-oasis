@@ -1,0 +1,140 @@
+Service that allow developers to easilt create a back-end with a Postgres database 
+
+Supabase Automatically creates a database and API so we can easily request data from the server 
+
+Supabase also comes with easy to user authentication and file Storage 
+
+in supabase after create a Project we have in a left sidebar
+table editor to create a new Table 
+authentication part 
+and sql editor to make a specific part 
+storage to upload some files such as pdf or images 
+
+we Have a five state 
+1-Booking 
+2-Cabins 
+3-Guests 
+4-Settings 
+5-Users 
+all this state is Global remote state يعني هتتعامل مع ال api , and Stored within Supabase 
+and managing using react-Query 
+there will be one table for each state "Slice" in the database 
+
+we have a Booking table and GUEST AND CABIN TABLE we need to connect this tables 
+we connected this tables by supabase because supabase uses a Postgres DB , which is SQL (relational DB) so we join tables using foreign keys 
+to connect this tables 
+take a id in the Guest table and stored in the filed in the Booking table called the guestId 
+and store the cabin id in the filed of the BOOKING table called cabinId  
+this guestId , cabinId this is a forgin key inside the Booking 
+and id in the GUEST TABLE && CABIN TABLE IS THE PRIMARY KEY 
+Summary ===> we connect booking with a cabin by storing the cabin's id (primary key) in side the booking table called cabinId(forginkey) 
+
+
+when create a table every row by default contain the id and created_at ===> عشان تعرفك الرو دي اتعملت امتي 
+image the value is text because we are stored the url of the image
+becaue the app have appility to upload the image and stored the url to each of them in the cabin 
+to insert row click to inset and select the insert row 
+and to create a new table click to new table 
+and can rearrange the column by drag and drop the === icon 
+
+--------------------------------------------------- 
+startDate : timestamp (time and date no zone time ) 
+status:text => because we have three status checkIn , checkOut , UnConfirmed 
+
+to connect the tables first make a Column of the Forgin key in this case the filed of column name is cabinId and click to add forgin key 
+when click to added forgin key select the table you get from Primary Key after select table  
+Select columns from public.gueststo reference to
+public.bookings ==>select the filed you need to Added forgin key to this field
+public.guests   ==>select the field you need to get the Primary key from this field 
+after do this click save
+note :::> when click to the check box you make this field is  default filed or created by default 
+----------------------------------------------------- 
+supabase Automatically create Api Docs of your all tables and this is very helpful 
+supabase give the Choice to fetch all rows using a js library or using a restful api 
+
+why don't create  User table for authentication because supabase do this speratly don't need to make it supabase makes it Automatically
+
+go to any table in the apiDocs and go to read all rows copy the link and go to gitPach past the Link here the outPut is empty array we are sucess 
+why this empty array show because the level security when make a table first that prevent anyone have a api key to access to this data 
+طب لو عايز ارجع الداتا ديعني عايز اشوف الداتا دي اعمل ايه   
+make this steps : 
+1- go to the authentication 
+2- select Policies 
+3- edit to Policies 
+4- after edit 
+SELECT
+
+Enable read access for all users any user have a Link can fetch the data from the table  
+5- make a fetch request data will be appear 
+
+if you create a POST request to create a new Cabin that is not allowed because we need a new Policy for that action 
+---------------------------------------------------------- 
+connect supabase data with the react app 
+go to Api Docs and go to the introduction have all information to make this connection 
+
+you can use the restful url to connect to restful API ex:'https://gyfrnfkshijkulykeica.supabase.co' 
+
+or can use the Client js Library '@supabase/supabase-js' 
+we are using the Client js Library first we need to install this Library like this @supabase/supabase-js 
+  by this commend => npm i @supabase/supabase-js  
+and next go to the service folder and make a file for supabase called supabase.js 
+and write in here this lines 
+
+import { createClient } from '@supabase/supabase-js'
+const supabaseUrl = 'https://gyfrnfkshijkulykeica.supabase.co'
+👉 const supabaseKey = process.env.SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
+and added in the end this line  
+export default supabase 
+
+to get api key go to the settings and select API to  get the API_KEY 
+and after get the API_KEY  replace this process.env.SUPABASE_KEY to the API_KEY 
+the code become 
+
+import { createClient } from '@supabase/supabase-js'
+const supabaseUrl = 'https://gyfrnfkshijkulykeica.supabase.co'
+const supabaseKey = ' 
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5ZnJuZmtzaGlqa3VseWtlaWNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTEwNDQ4NjUsImV4cCI6MjAyNjYyMDg2NX0.h8nPseRRS5Nd3CnvHM3piKBBPqiClI_Ut8_fyme-pEY
+'
+const supabase = createClient(supabaseUrl, supabaseKey) 
+export default supabase 
+
+to write a function fetch all Cabins from the supabase Library 
+the Syntax of this Function is 
+export async function getCabins(){ 
+    // go to the supabase and go to the API DOCS and select cabins table go to the Fetch all rows  
+    // copy the snipt and put him inside the function 
+    
+let { data: cabins, error } = await supabase
+  .from('cabins')
+  .select('*')
+ if(error){
+    // if error execute this block  
+    console.error(error)
+    throw new Error('Cabins could not be Loaded')
+ } 
+ return data  // this is fetch the data from the cabins table
+} 
+
+// to TEST go to inside the Cabins Compoent and write 
+useEffect(  
+    function(){ 
+       async function getData(){ 
+            const res = await getCabins() ;  
+            console.log(res)
+        }  
+        getData()
+    }
+    , []) // on the Compoent Mount the fetch data do 
+
+and can make a fetch data in this case :: 
+useEffect(function(){ 
+    getCabins().then((data)=>console.log(data))
+} , [])
+-------------------------------------------------------------
+Setting Up Storage Buckets we can Upload Large file to it 
+to create A Storage Bucket Steps :::
+select the storage from the left navBar and Select the newBucket and make a Bucket is a public bucket to make anyone read the URL that in the bucket 
+we can upload image manually in the Storage Bucket by drag and drop or Clicking to Upload files button
+and Click the image after upload and click to the button GETURL to get the URL of the image 
+to access to the tables go to the table editor and select each table you need 
